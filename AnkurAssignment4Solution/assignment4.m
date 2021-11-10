@@ -15,7 +15,8 @@ disp(tbl)
 
 %Assigning variable names. As the entire table is imported, assigning
 %variable names as per our convenience is a must as it saves some time and
-%makes the variables easier to remember while calling them.
+%makes the variables easier to remember while calling them. Dot notation
+%used here is easier way to operate on a variable from the table.
 SubID = tbl.SubjectID;
 Age = tbl.Age;
 Gender = tbl.Gender;
@@ -27,16 +28,18 @@ Day3 = tbl.Day3;
 
 %Calculating mean of the 3 days and adding it as a variable. Using dot
 %notation, a function of choice (in this case 'mean') could be directly
-%applied over specified rows and columns. 
+%applied over specified rows and columns. ':' means all rows, and '5:end'
+%means column 5 till the last column.
 tbl.meanStrength = mean(tbl{:,5:end},2);
 disp(tbl)
 meanStrength = tbl.meanStrength;
 
 %Sorting mean strength by Gender and calculating group mean of male and
-%female groups. GebderIsoCalc function seperates the meanstrength data
+%female groups. GenderIsoCalc function seperates the meanstrength data
 %based on the gender of the participant and returns a mean value of the
 %individual as well as a group mean value of males and females for
-%comparison of strength measures across the gender.
+%comparison of strength measures across the gender. In order to access all
+%the data, this function takes the entire table as input.
 [maleIsoIndMean,femaleIsoIndMean, maleGroupIsoMean, femaleGroupIsoMean] = genderIsoCalc(tbl)
 
 %Comparing individual days of strength training to see increase in strength
@@ -73,6 +76,12 @@ normDay3mean = mean(normDay3)
 %number of rows.
 R = {SubID,meanStrength,maleIsoIndMean,femaleIsoIndMean,maleGroupIsoMean,femaleGroupIsoMean,day1toDay2',day2toDay3',normDay1mean,normDay2mean,normDay3mean};
 Result = cell2table(R,'VariableNames',{'SubID','meanStrength','maleIsoIndMean','femaleIsoIndMean','maleGroupIsoMean','femaleGroupIsoMean','day1toDay2','day2toDay3','normDay1mean','normDay2mean','normDay3mean'});
+%This variable 'Result' was opened by double clicking it in the workspace
+%and then modified. The modification from a 1x10 table to a 25x10 table was
+%done manually. Every cell with multiple elements in rows was selected by double clicking. Then, 
+%the entire column was copied and pasted in the same location of the cell
+%in the main Result table. This was done for all cells with multiple row
+%elements. The modified table Result was then saved as a '.mat' file.
 load('Results.mat')
 writetable(Result, 'iso_results.csv')
 
